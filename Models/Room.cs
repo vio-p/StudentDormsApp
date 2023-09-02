@@ -9,6 +9,8 @@ public partial class Room : ObservableObject
     [ObservableProperty] private int _number;
     public bool Active { get; set; } = true;
     public int DormId { get; set; }
-    [ObservableProperty] private Dorm? _dorm;
+    [ObservableProperty] private Dorm _dorm;
     public ICollection<Invoice>? Invoices { get; set; }
+
+    public string DisplayName => "Dorm " + Dorm.Number + ", room " + Number;
 }

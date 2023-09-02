@@ -23,6 +23,9 @@ public class StudentDormsContext : DbContext
             .Property(d => d.Tax)
             .HasPrecision(19, 2);
 
+        modelBuilder.Entity<Room>()
+            .Ignore(r => r.DisplayName);
+
         modelBuilder.Entity<Invoice>()
             .Property(i => i.Amount)
             .HasPrecision(19, 2);

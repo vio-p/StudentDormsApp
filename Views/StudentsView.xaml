@@ -6,14 +6,64 @@
              xmlns:local="clr-namespace:StudentDormsApp.Views"
              xmlns:viewmodels="clr-namespace:StudentDormsApp.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="550" d:DesignWidth="900"
              FontSize="14" FontFamily="Microsoft Sans Serif">
     
-    <UserControl.DataContext>
+    <!--<UserControl.DataContext>
         <viewmodels:StudentsViewModel/>
-    </UserControl.DataContext>
+    </UserControl.DataContext>-->
     
-    <Grid>
-        <TextBlock Text="StudentsView"/>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.ColumnSpan="3" Text="Students" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="1" Text="First name: " Margin="0 5" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="2" Text="Last name: " VerticalAlignment="Center"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="3" Text="CNP: " Margin="0 5" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Cnp, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="4" Text="Faculty: " VerticalAlignment="Center"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Faculty, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="5" Text="Student type: " VerticalAlignment="Center"/>
+        <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding StudentTypes}" SelectedItem="{Binding SelectedStudentType}" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0 5"/>
+
+        <TextBlock Grid.Row="6" Text="Room: " VerticalAlignment="Center"/>
+        <ComboBox Grid.Row="6" Grid.Column="1" ItemsSource="{Binding Rooms}" SelectedItem="{Binding SelectedRoom}" DisplayMemberPath="DisplayName" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+
+        <Button Grid.Row="2" Grid.Column="2" Content="Add student" Command="{Binding AddStudentCommand}"  VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="100"/>
+        <Button Grid.Row="3" Grid.Column="2" Content="Modify student" Command="{Binding ModifyStudentCommand}" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="100"/>
+        <Button Grid.Row="4" Grid.Column="2" Content="Delete student" Command="{Binding DeleteStudentCommand}" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="100"/>
+
+        <DataGrid Grid.Row="7" Grid.ColumnSpan="3" ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" Margin="0 5">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="First name" Binding="{Binding FirstName}"/>
+                <DataGridTextColumn Header="Last name" Binding="{Binding LastName}"/>
+                <DataGridTextColumn Header="CNP" Binding="{Binding Cnp}"/>
+                <DataGridTextColumn Header="Faculty" Binding="{Binding Faculty}"/>
+                <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
+                <DataGridTextColumn Header="Room" Binding="{Binding Room.DisplayName}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>
