@@ -22,8 +22,7 @@
         <Menu FontSize="14">
             <MenuItem Header="Home" Command="{Binding ShowHomePageCommand}"/>
             <MenuItem Header="Students" Command="{Binding ShowStudentsPageCommand}"/>
-            <MenuItem Header="Dorms and Rooms"/>
-            <MenuItem Header="Taxes"/>
+            <MenuItem Header="Dorms and Rooms" Command="{Binding ShowDormsAndRoomsPageCommand}"/>
         </Menu>
 
         <ContentControl Grid.Row="1" Content="{Binding CurrentPageViewModel}">
@@ -33,6 +32,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:StudentsViewModel}">
                     <views:StudentsView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:DormsAndRoomsViewModel}">
+                    <views:DormsAndRoomsView/>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

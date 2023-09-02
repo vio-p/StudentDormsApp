@@ -17,8 +17,9 @@ public class MainViewModel : ViewModelBase
         }
     }
 
-    public ICommand ShowStudentsPageCommand { get; }
     public ICommand ShowHomePageCommand { get; }
+    public ICommand ShowStudentsPageCommand { get; }
+    public ICommand ShowDormsAndRoomsPageCommand { get; }
 
     public MainViewModel()
     {
@@ -26,6 +27,7 @@ public class MainViewModel : ViewModelBase
 
         ShowHomePageCommand = new RelayCommand(ShowHomePage);
         ShowStudentsPageCommand = new RelayCommand(ShowStudentsPage);
+        ShowDormsAndRoomsPageCommand = new RelayCommand(ShowDormsAndRoomsPage);
     }
 
     private void ShowHomePage()
@@ -36,5 +38,10 @@ public class MainViewModel : ViewModelBase
     private void ShowStudentsPage()
     {
         CurrentPageViewModel = new StudentsViewModel();
+    }
+
+    private void ShowDormsAndRoomsPage()
+    {
+        CurrentPageViewModel = new DormsAndRoomsViewModel();
     }
 }
