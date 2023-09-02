@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.Generic;
 
 namespace StudentDormsApp.Models;
 
-public class Room
+public partial class Room : ObservableObject
 {
     public int Id { get; set; }
-    public int Number { get; set; }
+    [ObservableProperty] private int _number;
     public bool Active { get; set; } = true;
     public int DormId { get; set; }
-    public Dorm? Dorm { get; set; }
+    [ObservableProperty] private Dorm? _dorm;
     public ICollection<Invoice>? Invoices { get; set; }
 }

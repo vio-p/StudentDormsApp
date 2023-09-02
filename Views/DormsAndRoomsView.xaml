@@ -9,10 +9,6 @@
              d:DesignHeight="550" d:DesignWidth="900"
              FontSize="14" FontFamily="Microsoft Sans Serif">
 
-    <!--<UserControl.DataContext>
-        <viewmodels:DormsAndRoomsViewModel/>
-    </UserControl.DataContext>-->
-    
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -48,21 +44,46 @@
 
                 <DataGrid Grid.Row="3" Grid.ColumnSpan="3" ItemsSource="{Binding Dorms}" SelectedItem="{Binding SelectedDorm}" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" Margin="0 5">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Number" Binding="{Binding Number}"/>
+                        <DataGridTextColumn Header="Dorm number" Binding="{Binding Number}"/>
                         <DataGridTextColumn Header="Tax" Binding="{Binding Tax}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-
             </Grid>
         </Border>
 
         <Border Grid.Row="1" BorderBrush="DarkGray" BorderThickness="1" Margin="0 5 0 0">
-            <Grid>
+            <Grid Margin="5">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.ColumnSpan="3" Text="Rooms" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="1" Text="Number: " Margin="0 5" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding RoomNumber, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="2" Text="Dorm: " VerticalAlignment="Center"/>
+                <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Dorms}" SelectedItem="{Binding SelectedDormForRoom}" DisplayMemberPath="Number" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+
+                <Button Grid.Column="2" Content="Add room" Command="{Binding AddRoomCommand}"  VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="100"/>
+                <Button Grid.Row="1" Grid.Column="2" Content="Modify room" Command="{Binding ModifyRoomCommand}" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="100"/>
+                <Button Grid.Row="2" Grid.Column="2" Content="Delete room" Command="{Binding DeleteRoomCommand}" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="100"/>
+
+                <DataGrid Grid.Row="3" Grid.ColumnSpan="3" ItemsSource="{Binding Rooms}" SelectedItem="{Binding SelectedRoom}" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" Margin="0 5">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Room number" Binding="{Binding Number}"/>
+                        <DataGridTextColumn Header="Dorm number" Binding="{Binding Dorm.Number}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </Border>
     </Grid>

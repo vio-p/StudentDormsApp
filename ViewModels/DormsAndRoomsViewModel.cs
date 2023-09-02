@@ -1,32 +1,36 @@
-﻿using StudentDormsApp.Commands;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentDormsApp.Commands;
 using StudentDormsApp.Models;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using static CommunityToolkit.Mvvm.ComponentModel.__Internals.__TaskExtensions.TaskAwaitableWithoutEndValidation;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace StudentDormsApp.ViewModels;
 
 public class DormsAndRoomsViewModel : ViewModelBase
 {
+    public DormsAndRoomsViewModel()
+    {
+        using StudentDormsContext context = new();
+        Dorms = new(context.Dorms.Where(dorm => dorm.Active));
+        Rooms = new(context.Rooms.Include("Dorm").Where(room => room.Active));
+
+        AddDormCommand = new RelayCommand(AddDorm, parameter => DormInputIsValid());
+        ModifyDormCommand = new RelayCommand(ModifyDorm, parameter => DormInputIsValid() && SelectedDorm != null);
+        DeleteDormCommand = new RelayCommand(DeleteDorm, parameter => SelectedDorm != null);
+
+        AddRoomCommand = new RelayCommand(AddRoom, parameter => RoomInputIsValid());
+        ModifyRoomCommand = new RelayCommand(ModifyRoom, parameter => RoomInputIsValid() && SelectedRoom != null);
+        DeleteRoomCommand = new RelayCommand(DeleteRoom, parameter => SelectedRoom != null);
+    }
+
+    #region Dorms
     public ObservableCollection<Dorm> Dorms { get; }
 
     public ICommand AddDormCommand { get; }
     public ICommand ModifyDormCommand { get; }
     public ICommand DeleteDormCommand { get; }
-
-    public DormsAndRoomsViewModel()
-    {
-        using StudentDormsContext context = new();
-        Dorms = new(context.Dorms.Where(dorm => dorm.Active));
-
-        AddDormCommand = new RelayCommand(AddDorm, parameter => DormInputIsValid());
-        ModifyDormCommand = new RelayCommand(ModifyDorm, parameter => DormInputIsValid() && SelectedDorm != null);
-        DeleteDormCommand = new RelayCommand(DeleteDorm, parameter => SelectedDorm != null);
-    }
 
     private string _dormNumber;
     public string DormNumber
@@ -69,6 +73,17 @@ public class DormsAndRoomsViewModel : ViewModelBase
             }
             OnPropertyChanged(nameof(SelectedDorm));
         }
+    }
+
+    private bool DormInputIsValid()
+    {
+        if (string.IsNullOrEmpty(DormNumber) || string.IsNullOrEmpty(DormTax))
+        {
+            return false;
+        }
+        bool numberIsValid = int.TryParse(DormNumber, out _);
+        bool taxIsValid = decimal.TryParse(DormTax, out _);
+        return numberIsValid && taxIsValid;
     }
 
     private void AddDorm()
@@ -125,15 +140,122 @@ public class DormsAndRoomsViewModel : ViewModelBase
 
         Dorms.Remove(SelectedDorm);
     }
+    #endregion
 
-    private bool DormInputIsValid()
+    #region Rooms
+    public ObservableCollection<Room> Rooms { get; }
+
+    public ICommand AddRoomCommand { get; }
+    public ICommand ModifyRoomCommand { get; }
+    public ICommand DeleteRoomCommand { get; }
+
+    private string _roomNumber;
+    public string RoomNumber
     {
-        if (string.IsNullOrEmpty(DormNumber) || string.IsNullOrEmpty(DormTax))
+        get => _roomNumber;
+        set
+        {
+            _roomNumber = value;
+            OnPropertyChanged(nameof(RoomNumber));
+        }
+    }
+
+    private Dorm _selectedDormForRoom;
+    public Dorm SelectedDormForRoom
+    {
+        get => _selectedDormForRoom;
+        set
+        {
+            _selectedDormForRoom = value;
+            OnPropertyChanged(nameof(SelectedDormForRoom));
+        }
+    }
+
+    private Room _selectedRoom;
+    public Room SelectedRoom
+    {
+        get => _selectedRoom;
+        set
+        {
+            _selectedRoom = value;
+            if (_selectedRoom != null)
+            {
+                RoomNumber = _selectedRoom.Number.ToString();
+                SelectedDormForRoom = Dorms.Single(dorm => dorm.Id == _selectedRoom.DormId);
+            }
+            else
+            {
+                RoomNumber = null!;
+                SelectedDormForRoom = null!;
+            }
+            OnPropertyChanged(nameof(SelectedRoom));
+        }
+    }
+
+    private bool RoomInputIsValid()
+    {
+        if (string.IsNullOrEmpty(RoomNumber) || SelectedDormForRoom == null)
         {
             return false;
         }
-        bool numberIsValid = int.TryParse(DormNumber, out _);
-        bool taxIsValid = decimal.TryParse(DormTax, out _);
-        return numberIsValid && taxIsValid;
+        bool numberIsValid = int.TryParse(RoomNumber, out _);
+        return numberIsValid;
     }
+
+    private void AddRoom()
+    {
+        using StudentDormsContext context = new();
+        if (context.Rooms.SingleOrDefault(room => room.Number == int.Parse(RoomNumber) && room.DormId == SelectedDormForRoom.Id && room.Active) != null)
+        {
+            _ = MessageBox.Show("There is already a room with this number in the selected dorm!", "Invalid number", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+
+        Room room = new()
+        {
+            Number = int.Parse(RoomNumber),
+            Dorm = context.Dorms.Single(dorm => dorm.Id == SelectedDormForRoom.Id)
+        };
+        Rooms.Add(room);
+
+        context.Rooms.Add(room);
+        context.SaveChanges();
+    }
+
+    private void ModifyRoom()
+    {
+        using StudentDormsContext context = new();
+        if (context.Rooms.SingleOrDefault(room => room.Id != SelectedRoom.Id && room.Number == int.Parse(RoomNumber) && room.DormId == SelectedDormForRoom.Id && room.Active) != null)
+        {
+            _ = MessageBox.Show("There is already a room with this number in the selected dorm!", "Invalid number", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+
+        SelectedRoom.Number = int.Parse(RoomNumber);
+        SelectedRoom.DormId = SelectedDormForRoom.Id;
+        SelectedRoom.Dorm = SelectedDormForRoom;
+
+        Room dbRoom = context.Rooms.Single(room => room.Id == SelectedRoom.Id);
+        dbRoom.Number = SelectedRoom.Number;
+        dbRoom.DormId = SelectedRoom.DormId;
+        context.SaveChanges();
+    }
+
+    private void DeleteRoom()
+    {
+        using StudentDormsContext context = new();
+
+        if (context.Students.Where(student => student.RoomId == SelectedRoom.Id && student.Active).ToList().Count > 0)
+        {
+            _ = MessageBox.Show("This room can't be deleted because there are students linked to it!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+
+        Room dbRoom = context.Rooms.Single(room => room.Id == SelectedRoom.Id);
+        dbRoom.Active = false;
+        context.SaveChanges();
+
+        Rooms.Remove(SelectedRoom);
+    }
+    #endregion
 }
