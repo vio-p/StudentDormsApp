@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace StudentDormApp.Commands;
+namespace StudentDormsApp.Commands;
 
 public abstract class CommandBase : ICommand
 {

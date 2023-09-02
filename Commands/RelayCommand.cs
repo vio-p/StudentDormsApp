@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StudentDormApp.Commands;
+namespace StudentDormsApp.Commands;
 
 public class RelayCommand : CommandBase
 {

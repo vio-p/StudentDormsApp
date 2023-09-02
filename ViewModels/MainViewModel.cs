@@ -1,8 +1,8 @@
-﻿using StudentDormApp.Commands;
+﻿using StudentDormsApp.Commands;
 using System;
 using System.Windows.Input;
 
-namespace StudentDormApp.ViewModels;
+namespace StudentDormsApp.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {

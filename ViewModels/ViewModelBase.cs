@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace StudentDormApp.ViewModels;
+namespace StudentDormsApp.ViewModels;
 
 public class ViewModelBase : INotifyPropertyChanged
 {
