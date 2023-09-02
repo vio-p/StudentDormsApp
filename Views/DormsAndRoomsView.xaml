@@ -6,14 +6,64 @@
              xmlns:local="clr-namespace:StudentDormsApp.Views"
              xmlns:viewmodels="clr-namespace:StudentDormsApp.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="550" d:DesignWidth="900"
              FontSize="14" FontFamily="Microsoft Sans Serif">
 
-    <UserControl.DataContext>
+    <!--<UserControl.DataContext>
         <viewmodels:DormsAndRoomsViewModel/>
-    </UserControl.DataContext>
+    </UserControl.DataContext>-->
     
-    <Grid>
-        <TextBlock Text="DormsAndRoomsView"/>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border BorderBrush="DarkGray" BorderThickness="1" Margin="0 0 0 5">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.ColumnSpan="3" Text="Dorms" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="1" Text="Number: " Margin="0 5" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding DormNumber, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="2" Text="Tax: " VerticalAlignment="Center"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding DormTax, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+
+                <Button Grid.Column="2" Content="Add dorm" Command="{Binding AddDormCommand}"  VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="100"/>
+                <Button Grid.Row="1" Grid.Column="2" Content="Modify dorm" Command="{Binding ModifyDormCommand}" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="100"/>
+                <Button Grid.Row="2" Grid.Column="2" Content="Delete dorm" Command="{Binding DeleteDormCommand}" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="100"/>
+
+                <DataGrid Grid.Row="3" Grid.ColumnSpan="3" ItemsSource="{Binding Dorms}" SelectedItem="{Binding SelectedDorm}" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" Margin="0 5">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Number" Binding="{Binding Number}"/>
+                        <DataGridTextColumn Header="Tax" Binding="{Binding Tax}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" BorderBrush="DarkGray" BorderThickness="1" Margin="0 5 0 0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

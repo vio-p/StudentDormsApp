@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,11 +8,11 @@ using System.Windows.Controls;
 
 namespace StudentDormsApp.Models;
 
-public class Dorm
+public partial class Dorm : ObservableObject
 {
-    public int Id { get; set; } 
-    public int Number { get; set; }
-    public decimal Tax { get; set; }
+    public int Id { get; set; }
+    [ObservableProperty] private int _number;
+    [ObservableProperty] private decimal _tax;
     public bool Active { get; set; } = true;
 
     public ICollection<Room>? Rooms { get; set; }
