@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace StudentDormApp
+namespace StudentDormApp.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for StudentsView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class StudentsView : UserControl
     {
-        public MainWindow()
+        public StudentsView()
         {
             InitializeComponent();
         }
