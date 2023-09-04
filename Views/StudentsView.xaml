@@ -8,11 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="550" d:DesignWidth="900"
              FontSize="14" FontFamily="Microsoft Sans Serif">
-    
-    <!--<UserControl.DataContext>
-        <viewmodels:StudentsViewModel/>
-    </UserControl.DataContext>-->
-    
+
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -54,6 +50,8 @@
         <Button Grid.Row="2" Grid.Column="2" Content="Add student" Command="{Binding AddStudentCommand}"  VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="100"/>
         <Button Grid.Row="3" Grid.Column="2" Content="Modify student" Command="{Binding ModifyStudentCommand}" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="100"/>
         <Button Grid.Row="4" Grid.Column="2" Content="Delete student" Command="{Binding DeleteStudentCommand}" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="100"/>
+
+        <Button Grid.Row="6" Grid.Column="2" Content="Remove from room" Command="{Binding RemoveStudentFromRoomCommand}" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="100"/>
 
         <DataGrid Grid.Row="7" Grid.ColumnSpan="3" ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" Margin="0 5">
             <DataGrid.Columns>

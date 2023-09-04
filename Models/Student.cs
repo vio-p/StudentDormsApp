@@ -20,8 +20,8 @@ public partial class Student : ObservableObject
     [ObservableProperty] private string _cnp;
     [ObservableProperty] private string _faculty;
     [ObservableProperty] private StudentType _type;
-    public int RoomId { get; set; }
-    public Room? Room { get; set; }
+    public int? RoomId { get; set; }
+    [ObservableProperty] private Room? _room;
     public bool Active { get; set; } = true;
 
     public string FullName => FirstName + " " + LastName;
