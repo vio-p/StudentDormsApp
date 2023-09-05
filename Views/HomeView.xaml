@@ -6,14 +6,63 @@
              xmlns:local="clr-namespace:StudentDormsApp.Views"
              xmlns:viewmodels="clr-namespace:StudentDormsApp.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="550" d:DesignWidth="900"
              FontSize="14" FontFamily="Microsoft Sans Serif">
-    
+
     <UserControl.DataContext>
         <viewmodels:HomeViewModel/>
     </UserControl.DataContext>
-    
-    <Grid>
-        <TextBlock Text="HomeView"/>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <WrapPanel Grid.Column="2" HorizontalAlignment="Right" Margin="0 10">
+            <TextBlock Text="Current date" VerticalAlignment="Center" Margin="5 0"/>
+            <DatePicker SelectedDate="{Binding CurrentDate}" IsEnabled="{Binding DatePickerIsEnabled}"/>
+        </WrapPanel>
+
+        <TextBlock Grid.Row="1" Text="Find student by CNP:" VerticalAlignment="Center" Margin="0 0 5 0"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding InputCnp, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+        <Button Grid.Row="1" Grid.Column="2" Content="Find student" Command="{Binding FindStudentCommand}" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="5 0" Margin="5 0"/>
+
+        <WrapPanel Grid.Row="2" Grid.ColumnSpan="3" Visibility="{Binding StudentDataVisibility}">
+            <TextBlock Text="Student: " FontSize="15" FontWeight="SemiBold" Margin="0 10"/>
+            <TextBlock Text="{Binding Student.FullName}" FontSize="15" Margin="0 10"/>
+        </WrapPanel>
+
+        <DataGrid Grid.Row="3" Grid.ColumnSpan="3" ItemsSource="{Binding Invoices}" SelectedItem="{Binding SelectedInvoice}" IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" Margin="0 5" Visibility="{Binding StudentDataVisibility}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Issue date" Binding="{Binding IssueDate, StringFormat=dd.MM.yyyy}"/>
+                <DataGridTextColumn Header="Due date" Binding="{Binding DueDate, StringFormat=dd.MM.yyyy}"/>
+                <DataGridTextColumn Header="Invoice amount" Binding="{Binding Amount}"/>
+                <DataGridTextColumn Header="Days late" Binding="{Binding DaysLate}"/>
+                <DataGridTextColumn Header="Penalty fee" Binding="{Binding PenaltyFee}"/>
+                <DataGridTextColumn Header="Total amount" Binding="{Binding TotalAmount}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="4" VerticalAlignment="Center" Visibility="{Binding StudentDataVisibility}">
+            <Button Content="Pay selected invoice" Command="{Binding PaySelectedInvoiceCommand}" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="5 0" Margin="5" Width="170"/>
+            <Button Content="Remove selected invoice" Command="{Binding RemoveSelectedInvoiceCommand}" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="5 0" Width="170"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" Margin="5" Visibility="{Binding StudentDataVisibility}">
+            <TextBlock Text="Paying for months: "/>
+            <TextBlock Text="{Binding MonthsToPay}" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <Button Grid.Row="4" Grid.Column="2" Content="Pay invoices" Command="{Binding PayInvoicesCommand}" Visibility="{Binding StudentDataVisibility}" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="5 0"/>
     </Grid>
 </UserControl>

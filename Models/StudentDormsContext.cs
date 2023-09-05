@@ -30,6 +30,9 @@ public class StudentDormsContext : DbContext
             .Property(i => i.Amount)
             .HasPrecision(19, 2);
         modelBuilder.Entity<Invoice>()
+            .Property(i => i.AmountPaid)
+            .HasPrecision(19, 2);
+        modelBuilder.Entity<Invoice>()
             .Property(i => i.State)
             .HasConversion<int>();
         modelBuilder.Entity<Invoice>()
@@ -42,6 +45,12 @@ public class StudentDormsContext : DbContext
             .WithMany(r => r.Invoices)
             .HasForeignKey(i => i.RoomId)
             .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<Invoice>()
+            .Ignore(i => i.PenaltyFee);
+        modelBuilder.Entity<Invoice>()
+            .Ignore(i => i.DaysLate);
+        modelBuilder.Entity<Invoice>()
+            .Ignore(i => i.TotalAmount);
     }
 
     public DbSet<Student> Students { get; set; }
